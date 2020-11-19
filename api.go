@@ -1,15 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-    "database/sql"
-    _ "github.com/go-sql-driver/mysql"
 )
 
 // Book struct (Model)
@@ -91,6 +91,12 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 // Main function
 func main() {
+	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:8000)/test")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	
 	// Init router
 	r := mux.NewRouter()
 
